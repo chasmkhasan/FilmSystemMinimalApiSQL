@@ -1,4 +1,5 @@
 using FilmSystemMinimalApiSQL.Data;
+using FilmSystemMinimalApiSQL.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace FilmSystemMinimalApiSQL
@@ -29,10 +30,54 @@ namespace FilmSystemMinimalApiSQL
 
             app.UseHttpsRedirection();
 
-            app.UseAuthorization();
+            //Get to Try out the routing
+            app.MapGet("/", () => "Welcome to Film System Minimal API SQL and TMDB");
+
+            //Get all GenreList Items
+            app.MapGet("/api/GenreList", async (DataContext context) => await context.GenreLists.ToListAsync());
+
+            //Get GenreList Items by id
+            app.MapGet("/api/GenreList/{GenreId}", async (DataContext context, int GenreId) =>
+                await context.GenreLists.FindAsync(GenreId) is GenreList genreList ? Results.Ok(genreList) : Results.NotFound("GenreList item not found ./"));
+
+            //Create GenreList Items 
+            app.MapPost("/api/GenreList", async (DataContext context, GenreList genreList) =>
+            {
+                context.GenreLists.Add(genreList);
+                await context.SaveChangesAsync();
+                return Results.Created($"/api/genreList/{genreList.GenreId}", genreList);
+            });
+
+            //Updating GenreList Items
+            app.MapPut("/api/GenreList/{GenreId}", async (DataContext context, GenreList genreList, int GenreId) =>
+            {
+                var genreListFromDb = await context.GenreLists.FindAsync(GenreId);
+
+                if (genreListFromDb != null)
+                {
+                    genreListFromDb.Title = genreList.Title;
+                    genreListFromDb.Description = genreList.Description;
+
+                    await context.SaveChangesAsync();
+                    return Results.Ok(genreList);
+                }
+                return Results.NotFound("genreList not found");
+            });
 
 
-            app.MapControllers();
+            //Deleting GenreList Items
+            app.MapDelete("/api/GenreList/{GenreId}", async (DataContext context, int GenreId) =>
+            {
+                var genreListFromDb = await context.GenreLists.FindAsync(GenreId);
+
+                if (genreListFromDb != null)
+                {
+                    context.Remove(genreListFromDb);
+                    await context.SaveChangesAsync();
+                    return Results.Ok();
+                }
+                return Results.NotFound("GenreList not found");
+            });
 
             app.Run();
         }
