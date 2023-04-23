@@ -31,9 +31,9 @@ namespace FilmSystemMinimalApiSQL
             app.UseHttpsRedirection();
 
             //Get to Try out the routing
-            app.MapGet("/", () => "Welcome to Film System Minimal API SQL and TMDB");
+            app.MapGet("/Welcome Note or Greeting", () => "Welcome to Film System Minimal API SQL and TMDB");
 
-            //Get all Person Information Items
+            //Get all people in the system
             app.MapGet("/api/UserList", async (DataContext context) => await context.UserLists.ToListAsync());
 
             //Create New Person Added Items 
@@ -44,62 +44,24 @@ namespace FilmSystemMinimalApiSQL
                 return Results.Created($"/api/userList/{userList.UserId}", userList);
             });
 
+            //Get see Rating Items
+            app.MapGet("/api/Movie/Rating Status/Person", async (DataContext context) => await context.Movies.ToListAsync());
 
-           
-
-
-
-
-
-
-
-            //Get GenreList Items by id
-            app.MapGet("/api/GenreList/{GenreId}", async (DataContext context, int GenreId) =>
-                await context.GenreLists.FindAsync(GenreId) is GenreList genreList ? Results.Ok(genreList) : Results.NotFound("GenreList item not found ./"));
-
-            //Create GenreList Items 
-            app.MapPost("/api/GenreList", async (DataContext context, GenreList genreList) =>
+            //Add Movie Link Connection with spacific person and spacific genre.
+            app.MapPost("/api/Movie/Add Link and Give Rating", async (DataContext context, Movie movie) =>
             {
-                context.GenreLists.Add(genreList);
+                context.Movies.Add(movie);
                 await context.SaveChangesAsync();
-                return Results.Created($"/api/genreList/{genreList.GenreId}", genreList);
+                return Results.Created($"/api/movie/{movie.MovieId}", movie);
             });
 
-            
-
-            
-
-            //Get User Choice Items by id
+            //Get UserChoice Items by id
             app.MapGet("/api/UserChoice/{ChoiceId}", async (DataContext context, int ChoiceId) =>
-                await context.UserChoices.FindAsync(ChoiceId) is UserChoice userChoice ? Results.Ok(userChoice) : Results.NotFound("User is not found ./"));
+                await context.UserChoices.FindAsync(ChoiceId) is UserChoice userChoice ? Results.Ok(userChoice) : Results.NotFound("UserChoice item not found ./"));
 
-            //Get User Choice Items by FkUserId
-            app.MapGet("/api/UserChoice/{FkUserIdUserId}", async (DataContext context, int FkUserIdUserId) =>
-                await context.UserChoices.FindAsync(FkUserIdUserId) is UserChoice userChoice ? Results.Ok(userChoice) : Results.NotFound("User is not found ./"));
-
-            ////Updating User Choice Items
-            //app.MapPut("/api/UserChoice/{FkUserIdUserId}", async (DataContext context, UserChoice userChoice, int FkUserIdUserId) =>
-            //{
-            //    var userChoiceFromDb = await context.UserChoices.FindAsync(FkUserIdUserId);
-
-            //    if (userChoiceFromDb != null)
-            //    {
-            //        userChoiceFromDb.ChoiceId = userChoice.ChoiceId;
-            //        userChoiceFromDb.FkUserId = userChoice.FkUserId;
-            //        userChoiceFromDb.FkGenreId = userChoice.FkGenreId;
-
-            //        //await context.SaveChangesAsync();
-            //        return Results.Ok(userChoice);
-            //    }
-            //    return Results.NotFound("userChoice not found");
-            //});
-
-            //Get all Movie List
-            app.MapGet("/api/Movie store", async (DataContext context) => await context.Movies.ToListAsync());
-
-            //Get MovieList Items by id
+            //Get Movie Items by id
             app.MapGet("/api/Movie/{MovieId}", async (DataContext context, int MovieId) =>
-                await context.Movies.FindAsync(MovieId) is Movie movie ? Results.Ok(movie) : Results.NotFound("Movie is not found ./"));
+                await context.Movies.FindAsync(MovieId) is Movie movie ? Results.Ok(movie) : Results.NotFound("Movie not found ./"));
 
             app.Run();
         }
