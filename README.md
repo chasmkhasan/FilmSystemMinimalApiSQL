@@ -4,3 +4,7 @@ In this project has SQL-Database and has been taken API key from TMDB(Millions o
 
 #Database Diagram is below:
 ![Database Diagram](https://github.com/chasmkhasan/FilmSystemMinimalApiSQL/blob/bc786c2422e89b88cdcdc73eae9947f14881f37c/FilmSystemMinimalApiSQL/FilmSystemDiagram.jpeg)
+
+# Test API via Insomnia
+=> Get all people in the system
+https://localhost:7159/api/UserList
