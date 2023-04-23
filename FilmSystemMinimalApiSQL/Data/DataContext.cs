@@ -5,6 +5,7 @@ namespace FilmSystemMinimalApiSQL.Data
 {
     public class DataContext : DbContext
     {
+        //Database connection
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
 

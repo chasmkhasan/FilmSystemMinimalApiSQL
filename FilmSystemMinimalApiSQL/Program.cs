@@ -1,4 +1,4 @@
-using FilmSystemMinimalApiSQL.Data;
+﻿using FilmSystemMinimalApiSQL.Data;
 using FilmSystemMinimalApiSQL.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -33,8 +33,25 @@ namespace FilmSystemMinimalApiSQL
             //Get to Try out the routing
             app.MapGet("/", () => "Welcome to Film System Minimal API SQL and TMDB");
 
-            //Get all GenreList Items
-            app.MapGet("/api/GenreList", async (DataContext context) => await context.GenreLists.ToListAsync());
+            //Get all Person Information Items
+            app.MapGet("/api/UserList", async (DataContext context) => await context.UserLists.ToListAsync());
+
+            //Create New Person Added Items 
+            app.MapPost("/api/UserList/Add New Person", async (DataContext context, UserList userList) =>
+            {
+                context.UserLists.Add(userList);
+                await context.SaveChangesAsync();
+                return Results.Created($"/api/userList/{userList.UserId}", userList);
+            });
+
+
+           
+
+
+
+
+
+
 
             //Get GenreList Items by id
             app.MapGet("/api/GenreList/{GenreId}", async (DataContext context, int GenreId) =>
@@ -48,36 +65,41 @@ namespace FilmSystemMinimalApiSQL
                 return Results.Created($"/api/genreList/{genreList.GenreId}", genreList);
             });
 
-            //Updating GenreList Items
-            app.MapPut("/api/GenreList/{GenreId}", async (DataContext context, GenreList genreList, int GenreId) =>
-            {
-                var genreListFromDb = await context.GenreLists.FindAsync(GenreId);
+            
 
-                if (genreListFromDb != null)
-                {
-                    genreListFromDb.Title = genreList.Title;
-                    genreListFromDb.Description = genreList.Description;
+            
 
-                    await context.SaveChangesAsync();
-                    return Results.Ok(genreList);
-                }
-                return Results.NotFound("genreList not found");
-            });
+            //Get User Choice Items by id
+            app.MapGet("/api/UserChoice/{ChoiceId}", async (DataContext context, int ChoiceId) =>
+                await context.UserChoices.FindAsync(ChoiceId) is UserChoice userChoice ? Results.Ok(userChoice) : Results.NotFound("User is not found ./"));
 
+            //Get User Choice Items by FkUserId
+            app.MapGet("/api/UserChoice/{FkUserIdUserId}", async (DataContext context, int FkUserIdUserId) =>
+                await context.UserChoices.FindAsync(FkUserIdUserId) is UserChoice userChoice ? Results.Ok(userChoice) : Results.NotFound("User is not found ./"));
 
-            //Deleting GenreList Items
-            app.MapDelete("/api/GenreList/{GenreId}", async (DataContext context, int GenreId) =>
-            {
-                var genreListFromDb = await context.GenreLists.FindAsync(GenreId);
+            ////Updating User Choice Items
+            //app.MapPut("/api/UserChoice/{FkUserIdUserId}", async (DataContext context, UserChoice userChoice, int FkUserIdUserId) =>
+            //{
+            //    var userChoiceFromDb = await context.UserChoices.FindAsync(FkUserIdUserId);
 
-                if (genreListFromDb != null)
-                {
-                    context.Remove(genreListFromDb);
-                    await context.SaveChangesAsync();
-                    return Results.Ok();
-                }
-                return Results.NotFound("GenreList not found");
-            });
+            //    if (userChoiceFromDb != null)
+            //    {
+            //        userChoiceFromDb.ChoiceId = userChoice.ChoiceId;
+            //        userChoiceFromDb.FkUserId = userChoice.FkUserId;
+            //        userChoiceFromDb.FkGenreId = userChoice.FkGenreId;
+
+            //        //await context.SaveChangesAsync();
+            //        return Results.Ok(userChoice);
+            //    }
+            //    return Results.NotFound("userChoice not found");
+            //});
+
+            //Get all Movie List
+            app.MapGet("/api/Movie store", async (DataContext context) => await context.Movies.ToListAsync());
+
+            //Get MovieList Items by id
+            app.MapGet("/api/Movie/{MovieId}", async (DataContext context, int MovieId) =>
+                await context.Movies.FindAsync(MovieId) is Movie movie ? Results.Ok(movie) : Results.NotFound("Movie is not found ./"));
 
             app.Run();
         }
