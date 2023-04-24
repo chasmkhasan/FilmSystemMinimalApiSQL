@@ -35,7 +35,7 @@ https://localhost:7159/api/Movie - Get
 https://localhost:7159/api/Movie - Post
 
 =>Connect a person to a new genre
-https://localhost:7159/api/Person/PersonChoise?Name=MK&GenreID=1
+https://localhost:7159/api/Person/PersonChoise?Name=MK&GenreID=1 - Post
 
 # Reflection:
 Minimal API is primery stag of learning and understanding of API. MVC is much more secure and profeeisonal. I have learned how does work about API. In this project API has been called only primerykey that is why I have faced problem to get other information. I couldn't reached how to call foreign key in my business logic. I will implement and try to sort it out foreign key request and will try to focused on MVC. 
