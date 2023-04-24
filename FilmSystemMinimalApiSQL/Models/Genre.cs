@@ -2,10 +2,10 @@
 
 namespace FilmSystemMinimalApiSQL.Models
 {
-    public class GenreList
+    public class Genre
     {
         [Key]
-        public int GenreId { get; set; }
+        public int ID { get; set; }
         public string? Title { get; set; }
         public string? Description { get; set; }
     }

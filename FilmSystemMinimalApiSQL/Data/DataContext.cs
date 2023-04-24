@@ -1,5 +1,6 @@
 ﻿using FilmSystemMinimalApiSQL.Models;
 using Microsoft.EntityFrameworkCore;
+using static FilmSystemMinimalApiSQL.Models.PersonChoise;
 
 namespace FilmSystemMinimalApiSQL.Data
 {
@@ -11,10 +12,9 @@ namespace FilmSystemMinimalApiSQL.Data
 
         }
 
-        public DbSet<GenreList> GenreLists => Set<GenreList>();
-        public DbSet<Movie> Movies => Set<Movie>();
-        public DbSet<UserChoice> UserChoices => Set<UserChoice>();
-        public DbSet<UserList> UserLists => Set<UserList>();
-
+        public DbSet<Person> Persons { get; set; }
+        public DbSet<PersonChoise> PersonChoises { get; set; }
+        public DbSet<Genre> Genres { get; set; }
+        public DbSet<Movie> Movies { get; set; }
     }
 }
