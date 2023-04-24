@@ -1,6 +1,7 @@
 ﻿using FilmSystemMinimalApiSQL.Data;
 using FilmSystemMinimalApiSQL.Models;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System.Xml.Linq;
 
 namespace FilmSystemMinimalApiSQL
@@ -14,6 +15,9 @@ namespace FilmSystemMinimalApiSQL
             // Add services to the container.
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+            builder.Services.AddSingleton<IMovieSuggestionService, MovieSuggestionService>();
+            builder.Services.AddHttpClient();
+            builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
@@ -100,7 +104,16 @@ namespace FilmSystemMinimalApiSQL
                 return Results.Created($"/api/MovieLink/", movieName);
             });
 
+            //TMDB-Inq
+            app.MapGet("/tmdb/api/moviesuggestions/{genreId}", async (IMovieSuggestionService movieSuggestionService, int genreId) =>
+            {
+                var suggestions = await movieSuggestionService.GetMovieSuggestions(genreId);
+                dynamic data = JsonConvert.SerializeObject(suggestions);
+                return data;
+            });
+
             app.Run();
         }
+
     }
 }
