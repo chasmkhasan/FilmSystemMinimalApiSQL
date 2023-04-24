@@ -46,7 +46,7 @@ https://localhost:7159/api/Person/PersonChoise?Name=MK&GenreID=1 - Post
 https://localhost:7159/api/Movie - Post
 
 # Reflection:
-Minimal API is primery stag of learning and understanding of API. MVC is much more secure and profeeisonal. I have learned how does work about API. In this project API has been called only primerykey that is why I have faced problem to get other information. I couldn't reached how to call foreign key in my business logic. I will implement and try to sort it out foreign key request and will try to focused on MVC. 
+Minimal API is primery stag of learning and understanding of API. MVC is much more secure and profeeisonal. I have learned how does work about API even I have leanred external API. I have used external API of TMDB. In this project could possible to generate TMDB genere information.
 I haven't done repository pattern yet because this project has very little time understand. I will focused on.
 
 ## Creator: Welcome to visit my link:
