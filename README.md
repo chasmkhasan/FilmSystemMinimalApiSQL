@@ -27,9 +27,9 @@ https://localhost:7159/api/Person/{ID}/PersonChoise?PersonID=1 - Get
 =>Download all videos linked to a specific person
 https://localhost:7159/api/Person/1/Movie - Get
 
-=>Enter and retrieve "rating" on films linked to a person
-https://localhost:7159/api/Movie - Post
-https://localhost:7159/api/Movie - Get
+=>Enter and Retrieve "rating" on films linked to a person
+https://localhost:7159/api/Person/1/Add/Movie/1/rating6 - Post
+https://localhost:7159/api/Movie/1/Person/1 - Get
 
 =>Insert new links for a specific person and a specific genre
 https://localhost:7159/api/Movie - Post
