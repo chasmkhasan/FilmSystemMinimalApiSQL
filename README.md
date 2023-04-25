@@ -45,6 +45,9 @@ https://localhost:7159/api/Person/PersonChoise?Name=MK&GenreID=1 - Post
 =>Insert new links for a specific person and a specific genre
 https://localhost:7159/api/Movie - Post
 
+=>Get suggestions for movies in a certain genre from an external API, eg TMDB.
+https://localhost:7159/tmdb/api/moviesuggestions/5 - Get
+
 # Reflection:
 Minimal API is primery stag of learning and understanding of API. MVC is much more secure and profeeisonal. I have learned how does work about API even I have leanred external API. I have used external API of TMDB. In this project could possible to generate TMDB genere information.
 I haven't done repository pattern yet because this project has very little time understand. I will focused on.
