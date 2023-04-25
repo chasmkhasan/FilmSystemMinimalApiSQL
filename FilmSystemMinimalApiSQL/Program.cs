@@ -47,7 +47,7 @@ namespace FilmSystemMinimalApiSQL
              });
 
             //Get all videos linked to a specific person
-            app.MapGet("/api/Person/{PersonID}/Movie/",
+            app.MapGet("/api/Person/{PersonID}/Movie",
             async (DataContext context, int PersonID) =>
             {
                 var movieLink = await context.Movies.Where(x => x.PersonID == PersonID).ToListAsync();
@@ -56,7 +56,7 @@ namespace FilmSystemMinimalApiSQL
 
             // Enter "rating" on films linked to a person
             // "/api/Person/{personId}/Add/Movie/{movieId}/rating{rating}
-            app.MapPost("/api/Movie/rating{rating}", async (DataContext context, int personId, int movieId, decimal rating) =>
+            app.MapPost("/api/Movie/rating/{rating}", async (DataContext context, int personId, int movieId, decimal rating) =>
             {
                 var movie = context.Movies.Where(x => x.PersonID == personId && x.ID == movieId).FirstOrDefault();
                 movie.Rating = rating; 
@@ -66,7 +66,6 @@ namespace FilmSystemMinimalApiSQL
             });
 
             // Retrieve  "rating" on films linked to a person
-            // 
             app.MapGet("/api/Movie/{ID}/Person/{personId}", async (DataContext context, int ID, int personId) =>
             {
                 var movie = context.Movies.Where(x => x.PersonID == personId && x.ID == ID).FirstOrDefault();
@@ -75,7 +74,7 @@ namespace FilmSystemMinimalApiSQL
             });
 
             //Connect a person to a new genre
-            app.MapPost("/api/Person/PersonChoise/", async (DataContext context, string Name, int GenreID) =>
+            app.MapPost("/api/Person/PersonChoise", async (DataContext context, string Name, int GenreID) =>
             {
                 var person = await context.Persons.SingleOrDefaultAsync(p => p.Name == Name);
                 if (person == null)
@@ -90,18 +89,28 @@ namespace FilmSystemMinimalApiSQL
             });
 
             //Insert new links for a specific person and a specific genre
-            app.MapPost("/api/MovieLink/", async (DataContext context, string name, string movieName, string link) =>
+            app.MapPost("/api/MovieLink", async (DataContext context, string movieName, string link, int personId, int genreId) =>
             {
-                var findPerson = await context.Persons.SingleOrDefaultAsync(p => p.Name == name);
-                if (findPerson == null)
+                var movieEnter = await context.Movies.SingleOrDefaultAsync(p => p.Name == movieName);
+
+                var movieLink = await context.Movies.SingleOrDefaultAsync(p => p.Link == link);
+
+                var personSelect = await context.Persons.SingleOrDefaultAsync(p => p.ID == personId);
+                if (personSelect == null)
+                {
+                    return Results.NotFound();
+                }
+
+                var genreSelect = await context.Genres.SingleOrDefaultAsync(p => p.ID == genreId);
+                if (genreSelect == null)
                 {
                     return Results.NotFound();
                 }
 
                 var insertMovieLink = context.Movies;
-                insertMovieLink.Add(new Movie { PersonID = findPerson.ID, Name = movieName, Link = link });
+                insertMovieLink.Add(new Movie { Name = movieName, Link = link, PersonID = personId, GenreID = genreId} );
                 await context.SaveChangesAsync();
-                return Results.Created($"/api/MovieLink/", movieName);
+                return Results.Created($"/api/MovieLink", link);
             });
 
             //TMDB-Inq

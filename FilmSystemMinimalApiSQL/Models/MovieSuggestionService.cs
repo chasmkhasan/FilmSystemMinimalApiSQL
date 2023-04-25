@@ -18,7 +18,7 @@ namespace FilmSystemMinimalApiSQL.Models
         public async Task<IEnumerable<string>> GetMovieSuggestions(int genreId)
         {
             var suggestions = new List<string>();
-            string url = $"https://api.themoviedb.org/3/discover/movie?api_key={_config.GetConnectionString("b15bc7bd4c5ec20893fdabc51b2dbe5f")}&with_genres={genreId}";
+            string url = $"https://api.themoviedb.org/3/discover/movie?api_key={_config.GetConnectionString("APIKEY")}&with_genres={genreId}";
             var response = await _httpClient.GetAsync(url);
 
             if (response.IsSuccessStatusCode)
